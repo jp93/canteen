@@ -1,0 +1,30 @@
+export const departmentList = [
+    {
+        id:'1',
+        name:'广西中烟工业本部',
+        orderNo:1, 
+        hasChild:'1',
+        isShowSubDepartment:false
+    },
+    {
+        id:'2',
+        name:'柳州卷烟厂',
+        orderNo:1, 
+        hasChild:'1',
+        isShowSubDepartment:false
+    },
+    {
+        id:'3',
+        name:'南宁卷烟厂',
+        orderNo:1, 
+        hasChild:'1',
+        isShowSubDepartment:false
+    },
+    {
+        id:'4',
+        name:'物流中心',
+        orderNo:1, 
+        hasChild:'1',
+        isShowSubDepartment:false
+    }
+]

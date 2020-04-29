@@ -1,0 +1,59 @@
+// 背景图片
+bg-image($url)
+  background-image: url($url + "@2x.png")
+  @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)
+    background-image: url($url + "@3x.png")
+
+// 不换行
+no-wrap()
+  text-overflow: ellipsis
+  overflow: hidden
+  white-space: nowrap
+
+//几行后不换行
+line-no-wrap($count)
+  // word-break: break-all
+  // text-overflow: ellipsis
+  // display: -webkit-box
+  // -webkit-box-orient: vertical
+  // -webkit-line-clamp: $count
+  width: 192px
+  height: 45px
+  overflow: hidden                          
+// 扩展点击区域
+extend-click()
+  position: relative
+  &:before
+    content: ''
+    position: absolute
+    top: -10px
+    left: -10px
+    right: -10px
+    bottom: -10px
+//1px border
+border-1px($color)
+  position: relative
+  &::after
+    display: block
+    position: absolute
+    left: 0
+    bottom: 0
+    width: 100%
+    border-top: 1px solid $color
+    content: ' '
+loading()
+  .tips
+    text-align: center
+    line-height: 50px
+    font-size: 13px
+    color: #1B1D1D
+    opacity: 0.6
+    margin-top:50px
+  .tips-loading
+    margin-top: 15px
+    display: inline-block
+bg()
+  overflow: hidden
+  background-size: cover
+  background-position: center center
+  background-repeat: no-repeat     
