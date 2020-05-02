@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production'? '/fb/static/': '/',
+  publicPath: process.env.NODE_ENV === 'production'? '/': '/',
   css: {
     loaderOptions: {
       css:{
@@ -36,19 +36,20 @@ module.exports = {
     }
   },
   devServer: {
-    // proxy: {
-    //   //配置跨域
-    //   '/api': {
-    //     target: "http://www.scdcd.top:9021/fb",
-    //     ws: true,
-    //     changOrigin: true,
-    //     pathRewrite: {
-    //       '^/api': '/'
-    //     }
-    //   }
-    // },
+    proxy: {
+      //配置跨域
+      '/api': {
+        target: "http://qyh.th00.cn/",
+        ws: true,
+        changOrigin: true,
+        pathRewrite: {
+          '^/api': '/'
+        }
+      }
+    },
     port:'80',
-    disableHostCheck: true
+    disableHostCheck: true,
+    host: "0.0.0.0"
   },
   pluginOptions: {
     'cube-ui': {

@@ -1,4 +1,4 @@
-# inspection-project
+# canteen
 
 ## Project setup
 ```
