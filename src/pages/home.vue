@@ -17,19 +17,24 @@
       </div>
     </div>
     <div class="content">
-      <cube-scroll-nav :side=true :data="list" @change="changeHandler">
+      <cube-scroll-nav  @change="changeHandler">
         <template slot="bar" slot-scope="props">
           <cube-scroll-nav-bar :labels="props.labels" :txts="barTxts" :current="props.current">
             <template slot-scope="props">
               <div class="week-wrap">
-                <span class="week">星期1</span>
+                <span class="week">星期</span>
                 <span class="day">{{props.txt.weekday.substring(2,3)}}</span>
                 <span class="date">{{props.txt.date}}</span>
               </div>
             </template>
           </cube-scroll-nav-bar>
         </template>
-        <cube-scroll-nav-panel  :title="item.weekday" v-for="item in list" :key="item.weekday" :label="item.weekday">
+        <cube-scroll-nav-panel 
+          v-for="item in data"
+          :key="item.name"
+          :label="item.name"
+       
+          >
           <div class="title" style="margin-top:44px">
             <img src="../../assets/week-title.png" alt="">
             <div class="title-content-wrap">
@@ -123,14 +128,14 @@ export default {
 
     //GET_MENU_PERIOD
     getMenuPeriod() {
-      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=1a1987fd-7024-4fe9-b804-b76513f6f107`).then(res => {
+      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=8d2b34cf-1780-49da-b832-7ba60c30b433`).then(res => {
         console.log('res',res)
         let data = res.data
 			
 			})
     },
     getWeekDetail() {
-      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=1a1987fd-7024-4fe9-b804-b76513f6f107&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
+      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=8d2b34cf-1780-49da-b832-7ba60c30b433&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
         console.log('res1',res)
         let data = res.data
         this.title = res.data.title

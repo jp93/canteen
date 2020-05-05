@@ -10,14 +10,14 @@
           <span class="fs15">本周：</span>
           <span class="fs12">{{title}}</span>
         </div>
-        <div class="right">
-          <span>&lt;上周</span>
-          <span>下周&gt;</span>
+        <div class="right" >
+          <span class="up-week">&lt;上周</span>
+          <span class="next-week" @click="nextWeek">下周&gt;</span>
         </div>
       </div>
     </div>
     <div class="content">
-      <cube-scroll-nav :data="list" @change="changeHandler">
+      <cube-scroll-nav  @change="changeHandler">
         <template slot="bar" slot-scope="props">
           <cube-scroll-nav-bar :labels="props.labels" :txts="barTxts" :current="props.current">
             <template slot-scope="props">
@@ -29,8 +29,13 @@
             </template>
           </cube-scroll-nav-bar>
         </template>
-        <cube-scroll-nav-panel  :title="item.weekday" v-for="item in list" :key="item.weekday" :label="item.weekday">
-          <div class="title" style="margin-top:44px">
+        <cube-scroll-nav-panel 
+          v-for="item in list"
+          :key="item.weekday"
+          :label="item.weekday"
+          title=""
+          >
+          <div class="title" >
             <img src="../../assets/week-title.png" alt="">
             <div class="title-content-wrap">
               <span class="title-content-week">{{item.weekday}}</span>
@@ -55,16 +60,19 @@
                   <span  v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >{{valItem}}</span>
                 </div>
               </div>
+             
             </div>
-            <!-- <li v-for="food in item.foods">
-           
-              <div>
-                <img :src="food.icon" />
-                <p>{{food.name}}</p>
-              </div>
-            </li> -->
           </ul>
+          <div class="no-data" v-if="item.meal.length == 0">
+            <img  class="icon-canel" src="../../assets/icon-cancel.png" alt="">
+          </div>
         </cube-scroll-nav-panel>
+        <div class="s-cook" v-if="list.length == 0">
+          <img src="../../assets/s-cook.png" alt="">
+          <span class="tip">
+            非常抱歉，这一周不开餐！
+          </span>
+        </div>
       </cube-scroll-nav>
     </div>
   </div>
@@ -72,8 +80,8 @@
 
 <script>
 import bridge from "@/bridge/h5";
-import goodsData from "./goods-list.json";
-const goods = goodsData.goods;
+import goodsData from "./list.json";
+ const goods = goodsData.data.list;
 export default {
   name: "home",
   data() {
@@ -82,8 +90,8 @@ export default {
       data: goods,
       currentYear:'',
       currentWeek:"",
-      title:"",
-      list:[]
+      title:'2020年第14周03.30-04.45',
+      list:goods
     };
   },
   components: {},
@@ -135,6 +143,7 @@ export default {
         let data = res.data
         this.title = res.data.title
         this.list = res.data.list
+        console.log(JSON.stringify(res.data.list))
 			
 			})
     },
@@ -143,7 +152,14 @@ export default {
       this.currentYear = date .getFullYear(); 
       this.currentWeek = this.getWeek(date)
       this.getWeekDetail()
+    },
+    nextWeek() {
+      this.currentWeek += 1
+      this.getWeekDetail()
+
     }
+
+
   },
   watch: {}
 };
@@ -198,6 +214,7 @@ export default {
       margin-top: 42px;
       height: 30px;
       padding: 5px 12px;
+      justify-content space-between;
 
       .left {
         .fs15 {
@@ -218,6 +235,12 @@ export default {
         font-size: 15px;
         color: #333;
         align-self: flex-end;
+        .up-week{
+          margin-right 17px;
+        }
+        .next-week{
+          color #4378BE;
+        }
       }
     }
   }
@@ -270,6 +293,24 @@ export default {
     >>>.cube-scroll-nav-bar .cube-scroll-nav-bar_horizontal{
       border:none;
     }
+    .s-cook{
+      width 100%;
+      display flex;
+      flex-direction column;
+      align-items center;
+      margin-top 20px;
+      
+      img{
+        width 45px;
+        height 65px
+      }
+      .tip{
+        font-size: 13px;
+        color: rgb(153, 153, 153);
+        line-height: 1.2;
+        margin-top:20px;
+      }
+    }
 
     .cube-scroll-nav-panel {
       width: 90%;
@@ -277,7 +318,8 @@ export default {
       .title{
         width 100%;
         position relative;
-        margin-top 2 0px;
+        margin-top 2px 0px;
+        padding-top 15px
 
         img{
           width 155px
@@ -289,7 +331,7 @@ export default {
           flex-direction column;
           align-items center;
           left 49%
-          top -11px
+          top 7px
           .title-content-week{
             font-size 16px;
             color #333;
@@ -315,6 +357,7 @@ export default {
         display flex;
         flex-direction column
         align-items center
+        justify-content center
         width 100%
         background:rgba(255,255,255,1);
         box-shadow:0px 0px 5px 0px rgba(17,53,57,0.08);
@@ -351,6 +394,22 @@ export default {
           }
           
         }
+        
+
+      }
+      .no-data{
+        width 100%;
+        height 135px;
+        display flex;
+        flex-direction column;
+        align-items center;
+        justify-content center;
+        background-color #fff
+        box-sizing border-box;
+        .icon-canel{
+          width:119px;
+          height:72px;
+        }
 
       }
 
@@ -366,6 +425,7 @@ export default {
         font-size: 14px;
         line-height: 1.4;
         color: #666;
+        margin-top 15px!important
       }
 
       li {
