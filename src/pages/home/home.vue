@@ -11,13 +11,13 @@
           <span class="fs12">{{title}}</span>
         </div>
         <div class="right" >
-          <span class="up-week">&lt;上周</span>
+          <span class="up-week" @click="lastWeek">&lt;上周</span>
           <span class="next-week" @click="nextWeek">下周&gt;</span>
         </div>
       </div>
     </div>
     <div class="content">
-      <cube-scroll-nav  @change="changeHandler">
+      <cube-scroll-nav  ref="scrollNav" :current="active"  :data="list"  @change="changeHandler">
         <template slot="bar" slot-scope="props">
           <cube-scroll-nav-bar :labels="props.labels" :txts="barTxts" :current="props.current">
             <template slot-scope="props">
@@ -86,7 +86,7 @@ export default {
   name: "home",
   data() {
     return {
-      active: 1,
+      active: 0,
       data: goods,
       currentYear:'',
       currentWeek:"",
@@ -98,7 +98,7 @@ export default {
 
   mounted() {
     this.currentTime()
-    this.getMenuPeriod()
+  
    
     
   },
@@ -122,7 +122,7 @@ export default {
         d2.setDate(1);
         let rq = d1-d2;
         let days = Math.ceil(rq/(24*60*60*1000));
-        let num = Math.ceil(days/7);
+        let num = Math.ceil(days/7)+1;
         return num;
       },
     changeHandler(label) {
@@ -131,19 +131,20 @@ export default {
 
     //GET_MENU_PERIOD
     getMenuPeriod() {
-      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=8d2b34cf-1780-49da-b832-7ba60c30b433`).then(res => {
+      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=04ed11fd-7ad8-479c-9b05-d7a178383144`).then(res => {
         console.log('res',res)
         let data = res.data
 			
 			})
     },
     getWeekDetail() {
-      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=8d2b34cf-1780-49da-b832-7ba60c30b433&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
+      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=04ed11fd-7ad8-479c-9b05-d7a178383144&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
         console.log('res1',res)
         let data = res.data
         this.title = res.data.title
         this.list = res.data.list
-        console.log(JSON.stringify(res.data.list))
+        this.active = 0
+        this.$refs.scrollNav && this.$refs.scrollNav.refresh()
 			
 			})
     },
@@ -151,12 +152,22 @@ export default {
       let date = new Date();
       this.currentYear = date .getFullYear(); 
       this.currentWeek = this.getWeek(date)
+      this.getMenuPeriod()
       this.getWeekDetail()
     },
     nextWeek() {
+      
       this.currentWeek += 1
       this.getWeekDetail()
 
+    },
+    lastWeek() {
+      let date = new Date();
+      let currentYear = date .getFullYear(); 
+      if( this.currentWeek && this.currentWeek > this.getWeek(new Date()) && currentYear== this.currentYear) {
+         this.currentWeek -= 1
+      }
+      this.getWeekDetail()
     }
 
 
