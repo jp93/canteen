@@ -90,7 +90,7 @@ export default {
       data: goods,
       currentYear:'',
       currentWeek:"",
-      title:'2020年第14周03.30-04.45',
+      title:'',
       list:goods
     };
   },
