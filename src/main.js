@@ -8,7 +8,6 @@ import apis from './apis'
 import Navigation from 'vue-navigation'
 import VConsole from 'vconsole/dist/vconsole.min.js'
 import Router from 'vue-router'
-import { Tab, Tabs, NavBar} from 'vant';
 
 
 const routerPush = Router.prototype.push
@@ -23,9 +22,6 @@ Vue.prototype.$apis = apis
 //var vConsole = new VConsole();
 
 Vue.use(Navigation, {router})
-Vue.use(Tab);
-Vue.use(Tabs);
-Vue.use(NavBar);
 
 
 window._vue = new Vue({
