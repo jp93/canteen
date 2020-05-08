@@ -57,7 +57,12 @@
                   {{mealItem.key}}
                 </div>
                 <div class="right" >
-                  <span  v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >{{valItem}}</span>
+                  <div class="valItem_wrap" v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >
+                    <span  class="valItem" >{{valItem}}</span>
+                    <span :class="{'hideSeparate':valIndex%2!=0 || valIndex == mealItem.val.length-1}" class="separate "></span>
+
+                  </div>
+                  
                 </div>
               </div>
              
@@ -116,29 +121,29 @@ export default {
   },
   methods: {
     getWeek(dt){
-        let d1 = new Date(dt);
-        let d2 = new Date(dt);
-        d2.setMonth(0);
-        d2.setDate(1);
-        let rq = d1-d2;
-        let days = Math.ceil(rq/(24*60*60*1000));
-        let num = Math.ceil(days/7)+1;
-        return num;
-      },
+      let d1 = new Date();
+      let d2 = new Date();
+      d2.setMonth(0);
+      d2.setDate(1);
+      let rq = d1-d2;
+      let s1 = Math.ceil(rq/(24*60*60*1000));
+      let s2 = Math.ceil(s1/7);
+      return s2;
+    },
     changeHandler(label) {
       console.log("changed to:", label);
     },
 
     //GET_MENU_PERIOD
     getMenuPeriod() {
-      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=04ed11fd-7ad8-479c-9b05-d7a178383144`).then(res => {
+      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=c788d402-8a8a-4b77-af50-2b9337b26902`).then(res => {
         console.log('res',res)
         let data = res.data
 			
 			})
     },
     getWeekDetail() {
-      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=04ed11fd-7ad8-479c-9b05-d7a178383144&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
+      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=c788d402-8a8a-4b77-af50-2b9337b26902&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
         console.log('res1',res)
         let data = res.data
         this.title = res.data.title
@@ -397,10 +402,42 @@ export default {
             flex-wrap wrap;
             font-size 15px;
             color #333;
-            justify-content space-between
-            span{
-              margin-bottom 10px
+            justify-content flex-start;
+            box-sizing border-box;
+            .valItem_wrap{
+              position relative;
+              width 49%;
+              box-sizing border-box;
+              .separate{
+                content: "";
+                margin-left: 15px;
+                padding-left: 15px;
+                border-left: 1px solid #c0c4cc;
+                height: 15px;
+                display: inline-block;
+                vertical-align: middle;
+                position absolute;
+                right:0;
+                top:3px;
+
+              }
+              .hideSeparate{
+                opacity:0;
+              }
+              .valItem{
+                text-align justify;
+                margin-bottom 10px;
+                width 100%;
+                position relative;
+                font-size 15px;
+                display inline-block;
+                color #333;
+                padding-right 15rpx
+                
+              }
             }
+            
+            
             
           }
           
@@ -444,9 +481,6 @@ export default {
         width: 50%;
       }
 
-      div {
-        margin: 0 auto;
-      }
 
       p {
         overflow: hidden;
