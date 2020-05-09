@@ -58,8 +58,8 @@
                 </div>
                 <div class="right" >
                   <div   class="valItem_wrap" v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >
-                    <span :class="[valIndex%2 !=0?'pl' :'pr']"  class="valItem" >{{valItem}}</span>
-                    <span :class="{'hideSeparate':valIndex%2!=0 || valIndex == mealItem.val.length-1}" class="separate "></span>
+                    <!-- <span :class="[valIndex%2 !=0?'pl' :'pr']"  class="valItem" >{{valItem}}</span> -->
+                    <span   class="valItem" >{{valItem}}</span>
 
                   </div>
                   
@@ -398,7 +398,7 @@ export default {
           }
           .right{
             flex 1;
-            margin-left 40px;
+            margin-left 30px;
             display flex;
             flex-direction row;
             flex-wrap wrap;
@@ -409,24 +409,9 @@ export default {
           
             .valItem_wrap{
               position relative;
-              width 49%;
+              width 32%;
               box-sizing border-box;
-              .separate{
-                content: "";
-                // margin-left: 15px;
-                // padding-left: 15px;
-                border-left: 1px solid #c0c4cc;
-                height: 15px;
-                display: inline-block;
-                vertical-align: middle;
-                position absolute;
-                right:0;
-                top:3px;
-
-              }
-              .hideSeparate{
-                opacity:0;
-              }
+              margin-right 10px
               .valItem{
                 text-align justify;
                 margin-bottom 10px;
