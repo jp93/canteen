@@ -52,12 +52,12 @@
               <img src="../../assets/breakfast.png" alt="">
             </div>
             <div class="food-wrap">
-              <div class="food-list" v-for="(mealItem,mealIndex) in j.type" :key="mealIndex">
+              <div :class="{'food-list_odd':mealIndex%2==0}" class="food-list" v-for="(mealItem,mealIndex) in j.type" :key="mealIndex">
                 <div class="left">
                   {{mealItem.key}}
                 </div>
                 <div class="right" >
-                  <div class="valItem_wrap" v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >
+                  <div   class="valItem_wrap" v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >
                     <span :class="[valIndex%2 !=0?'pl' :'pr']"  class="valItem" >{{valItem}}</span>
                     <span :class="{'hideSeparate':valIndex%2!=0 || valIndex == mealItem.val.length-1}" class="separate "></span>
 
@@ -381,6 +381,9 @@ export default {
         top:-8px;
         left:-3px;
         min-height 61px;
+        .food-list_odd{
+          background:rgba(247,247,247,1);
+        }
         .food-list{
           display flex
           flex-direction row
@@ -403,6 +406,7 @@ export default {
             color #333;
             justify-content flex-start;
             box-sizing border-box;
+          
             .valItem_wrap{
               position relative;
               width 49%;
