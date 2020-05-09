@@ -57,7 +57,7 @@
                   {{mealItem.key}}
                 </div>
                 <div class="right" >
-                  <div   class="valItem_wrap" v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >
+                  <div  :class="{'valItem_wrap_odd':(valIndex+1)%3 ===0}"    class="valItem_wrap" v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >
                     <!-- <span :class="[valIndex%2 !=0?'pl' :'pr']"  class="valItem" >{{valItem}}</span> -->
                     <span   class="valItem" >{{valItem}}</span>
 
@@ -387,7 +387,7 @@ export default {
         .food-list{
           display flex
           flex-direction row
-          padding:14px 19px;
+          padding:14px 10px 14px 19px;
           box-sizing border-box;
           width 100%;
           align-items center;
@@ -406,10 +406,13 @@ export default {
             color #333;
             justify-content flex-start;
             box-sizing border-box;
+            .valItem_wrap_odd{
+              margin-right 0!important;
+            }
           
             .valItem_wrap{
               position relative;
-              width 32%;
+              width 30%;
               box-sizing border-box;
               margin-right 10px
               .valItem{
@@ -420,16 +423,10 @@ export default {
                 font-size 15px;
                 display inline-block;
                 color #333;
-                padding-right 15rpx
                 box-sizing border-box
                 
               }
-              .pr{
-                padding-right 20px;
-              }
-              .pl{
-                padding-left 20px;
-              }
+          
             }
             
             
