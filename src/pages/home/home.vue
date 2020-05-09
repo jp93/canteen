@@ -381,6 +381,9 @@ export default {
         top:-8px;
         left:-3px;
         min-height 61px;
+        padding 10px;
+        box-sizing border-box;
+        border-radius 5px;
         .food-list_odd{
           background:rgba(247,247,247,1);
         }
@@ -391,6 +394,7 @@ export default {
           box-sizing border-box;
           width 100%;
           align-items center;
+
           .left{
             width 18%;
             font-size:15px;
