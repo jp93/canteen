@@ -58,7 +58,7 @@
                 </div>
                 <div class="right" >
                   <div class="valItem_wrap" v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >
-                    <span  class="valItem" >{{valItem}}</span>
+                    <span :class="[valIndex%2 !=0?'pl' :'pr']"  class="valItem" >{{valItem}}</span>
                     <span :class="{'hideSeparate':valIndex%2!=0 || valIndex == mealItem.val.length-1}" class="separate "></span>
 
                   </div>
@@ -362,10 +362,9 @@ export default {
       .type{
         width 100%
         margin-bottom 0px;
-        width 341px;
         height 59px
         img{
-          width 341px;
+          width 100%;
           height 59px
         }
       }
@@ -410,8 +409,8 @@ export default {
               box-sizing border-box;
               .separate{
                 content: "";
-                margin-left: 15px;
-                padding-left: 15px;
+                // margin-left: 15px;
+                // padding-left: 15px;
                 border-left: 1px solid #c0c4cc;
                 height: 15px;
                 display: inline-block;
@@ -433,7 +432,14 @@ export default {
                 display inline-block;
                 color #333;
                 padding-right 15rpx
+                box-sizing border-box
                 
+              }
+              .pr{
+                padding-right 20px;
+              }
+              .pl{
+                padding-left 20px;
               }
             }
             
