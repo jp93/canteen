@@ -19,7 +19,7 @@
     <div class="content">
       <cube-scroll-nav  ref="scrollNav" :current="active"  :data="list"  @change="changeHandler">
         <template slot="bar" slot-scope="props">
-          <cube-scroll-nav-bar :labels="props.labels" :txts="barTxts" :current="props.current">
+          <cube-scroll-nav-bar :labels="props.labels" :txts="barTxts || a" :current="props.current">
             <template slot-scope="props">
               <div class="week-wrap">
                 <span class="week">星期</span>
@@ -58,14 +58,15 @@
                 </div>
                 <div class="right" >
                   <div  :class="{'valItem_wrap_odd':(valIndex+1)%3 ===0}"    class="valItem_wrap" v-for="(valItem,valIndex) in mealItem.val" :key="valIndex" >
-                    <!-- <span :class="[valIndex%2 !=0?'pl' :'pr']"  class="valItem" >{{valItem}}</span> -->
                     <span   class="valItem" >{{valItem}}</span>
-
                   </div>
                   
                 </div>
               </div>
-             
+              <div class="no-data" v-if="j.type.length == 0">
+                <img  class="icon-canel" src="../../assets/icon-cancel.png" alt="">
+              </div>
+                
             </div>
           </ul>
           <div class="no-data" v-if="item.meal.length == 0">
@@ -86,7 +87,9 @@
 <script>
 import bridge from "@/bridge/h5";
 import goodsData from "./list.json";
- const goods = goodsData.data.list;
+const goods = goodsData.data.list;
+const PERIODS = [1,2,3,4,5]
+const WEEK = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
 export default {
   name: "home",
   data() {
@@ -96,21 +99,20 @@ export default {
       currentYear:'',
       currentWeek:"",
       title:'',
-      list:goods
+      list:goods,
+      constructList:[]
     };
   },
   components: {},
 
   mounted() {
     this.currentTime()
-  
-   
-    
   },
   computed: {
     barTxts() {
       let ret = []
-      ret = this.list.map(e => {
+      let list = this.list.length ? this.list : this.constructList
+      ret = list.map(e => {
         return{
           weekday:e.weekday,
           date:e.data
@@ -127,7 +129,7 @@ export default {
       d2.setDate(1);
       let rq = d1-d2;
       let s1 = Math.ceil(rq/(24*60*60*1000));
-      let s2 = Math.ceil(s1/7);
+      let s2 = Math.ceil(s1/7)+1;
       return s2;
     },
     changeHandler(label) {
@@ -136,22 +138,37 @@ export default {
 
     //GET_MENU_PERIOD
     getMenuPeriod() {
-      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=c788d402-8a8a-4b77-af50-2b9337b26902`).then(res => {
-        console.log('res',res)
+      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=cc794522-4214-48df-8013-da05fa9f4b9b`).then(res => {
         let data = res.data
-			
 			})
     },
     getWeekDetail() {
-      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=c788d402-8a8a-4b77-af50-2b9337b26902&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
-        console.log('res1',res)
+      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=cc794522-4214-48df-8013-da05fa9f4b9b&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
         let data = res.data
         this.title = res.data.title
-        this.list = res.data.list
+        let list = res.data.list
+        this.isData(list)
+        if(list.length === 0) {
+          this.list = list
+          return
+        }
+        list.forEach(e => {
+          if(e.meal.length >= 5 || !e.meal.length) {
+            return
+          }
+          PERIODS.forEach((j,index) => {
+            if(!e.meal[index]){
+              e.meal.push({
+                'period':index +1,
+                'type':[]
+              })
+            }
+          })
+        })
+        this.list = list
         this.active = 0
         this.$refs.scrollNav && this.$refs.scrollNav.refresh()
-			
-			})
+      })
     },
     currentTime() {
       let date = new Date();
@@ -161,19 +178,54 @@ export default {
       this.getWeekDetail()
     },
     nextWeek() {
-      
-      this.currentWeek += 1
+      this.currentWeek < 51 ? this.currentWeek += 1 : this.currentWeek  = 1
       this.getWeekDetail()
-
     },
+
     lastWeek() {
       let date = new Date();
       let currentYear = date .getFullYear(); 
       if( this.currentWeek && this.currentWeek > this.getWeek(new Date()) && currentYear== this.currentYear) {
-         this.currentWeek -= 1
+        this.currentWeek -= 1
       }
       this.getWeekDetail()
+    },
+    getWeekDay(dateString) {
+      let dateStringReg = /^\d{4}[/-]\d{1,2}[/-]\d{1,2}$/;
+      if (dateString.match(dateStringReg)) {
+        let presentDate = new Date(dateString),
+          today = presentDate.getDay() !== 0 ? presentDate.getDay() : 7;
+        return Array.from(new Array(7), function(val, index) {
+          return formatDate(new Date(presentDate.getTime() - (today - index - 1) * 24 * 60 * 60 * 1000));
+        });
+
+      } else {
+        throw new Error('dateString should be like "yyyy-mm-dd" or "yyyy/mm/dd"');
+      }
+      function formatDate(date) {
+        let month = (date.getMonth() + 1) < 10 ? '0'+(date.getMonth() + 1) : (date.getMonth() + 1)
+        let _date = date.getDate() < 10 ? '0'+ date.getDate() : date.getDate()
+        return month + '-' + _date;
+      }
+    },
+    isData(list) {
+      if(list.length) {
+        return
+      }
+      let title =  this.title
+      let _date = title.split(' ')[1].split('~')[0]
+      let getDate = this.currentYear + `-${_date}`
+      let weeks = this.getWeekDay(getDate)
+      let constructList = weeks.map((e,index) => {
+        return {
+          'data':e,
+          'weekday':WEEK[index],
+        }
+      })
+      this.constructList = constructList
+      this.$refs.scrollNav && this.$refs.scrollNav.refresh()
     }
+
 
 
   },
