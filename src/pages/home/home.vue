@@ -364,7 +364,7 @@ export default {
         margin-bottom 0px;
         height 59px
         img{
-          width 98%;
+          width 97%;
           height 50px
         }
       }
@@ -379,7 +379,7 @@ export default {
         border-radius:0px 0px 5px 5px;
         position relative;
         top:-8px;
-        left:-3px;
+        left:0px;
         min-height 61px;
         padding 10px;
         box-sizing border-box;
