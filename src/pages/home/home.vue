@@ -35,6 +35,7 @@
           :label="item.weekday"
           title=""
           >
+          <div :style="{'opacity':item.meal.length? 1:0}">
           <div class="title" >
             <img src="../../assets/week-title.png" alt="">
             <div class="title-content-wrap">
@@ -69,11 +70,12 @@
                 
             </div>
           </ul>
-          <div class="no-data" v-if="item.meal.length == 0">
+          </div>
+          <div class="no-data" v-if="item.meal.length == 0 && !isNoData">
             <img  class="icon-canel" src="../../assets/icon-cancel.png" alt="">
           </div>
         </cube-scroll-nav-panel>
-        <div class="s-cook" v-if="list.length == 0">
+        <div class="s-cook" v-if="isNoData">
           <img src="../../assets/s-cook.png" alt="">
           <span class="tip">
             非常抱歉，这一周不开餐！
@@ -100,7 +102,8 @@ export default {
       currentWeek:"",
       title:'',
       list:goods,
-      constructList:[]
+      constructList:[],
+      isNoData:false
     };
   },
   components: {},
@@ -149,7 +152,7 @@ export default {
         let list = res.data.list
         this.isData(list)
         if(list.length === 0) {
-          this.list = list
+         // this.list = list
           return
         }
         list.forEach(e => {
@@ -165,6 +168,7 @@ export default {
             }
           })
         })
+        this.isNoData = false
         this.list = list
         this.active = 0
         this.$refs.scrollNav && this.$refs.scrollNav.refresh()
@@ -220,9 +224,13 @@ export default {
         return {
           'data':e,
           'weekday':WEEK[index],
+          'meal':[]
         }
       })
       this.constructList = constructList
+      this.list = constructList
+      this.isNoData = true
+      this.active = 0
       this.$refs.scrollNav && this.$refs.scrollNav.refresh()
     }
 
@@ -367,6 +375,8 @@ export default {
       flex-direction column;
       align-items center;
       margin-top 20px;
+      position:relative;
+      top -250px
       
       img{
         width 45px;
