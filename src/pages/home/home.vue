@@ -364,8 +364,8 @@ export default {
         margin-bottom 0px;
         height 59px
         img{
-          width 100%;
-          height 59px
+          width 98%;
+          height 50px
         }
       }
       .food-wrap{
@@ -383,9 +383,9 @@ export default {
         min-height 61px;
         padding 10px;
         box-sizing border-box;
-        border-radius 5px;
         .food-list_odd{
           background:rgba(247,247,247,1);
+          border-radius 5px;
         }
         .food-list{
           display flex
