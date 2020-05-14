@@ -101,7 +101,7 @@ export default {
       currentYear:'',
       currentWeek:"",
       title:'',
-      list:goods,
+      list:[],
       constructList:[],
       isNoData:false
     };
@@ -171,7 +171,9 @@ export default {
         this.isNoData = false
         this.list = list
         this.active = 0
-        this.$refs.scrollNav && this.$refs.scrollNav.refresh()
+        this.$nextTick(() => {
+          this.$refs.scrollNav && this.$refs.scrollNav.refresh()
+        })
       })
     },
     currentTime() {
@@ -231,7 +233,9 @@ export default {
       this.list = constructList
       this.isNoData = true
       this.active = 0
-      this.$refs.scrollNav && this.$refs.scrollNav.refresh()
+      this.$nextTick(() => {
+        this.$refs.scrollNav && this.$refs.scrollNav.refresh()
+      })
     }
 
 
