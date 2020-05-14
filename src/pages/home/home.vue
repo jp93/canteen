@@ -35,7 +35,7 @@
           :label="item.weekday"
           title=""
           >
-          <div :style="{'opacity':item.meal.length? 1:0}">
+          <div :style="{'opacity':!isNoData? 1:0}">
           <div class="title" >
             <img src="../../assets/week-title.png" alt="">
             <div class="title-content-wrap">
@@ -132,7 +132,7 @@ export default {
       d2.setDate(1);
       let rq = d1-d2;
       let s1 = Math.ceil(rq/(24*60*60*1000));
-      let s2 = Math.ceil(s1/7)+1;
+      let s2 = Math.ceil(s1/7);
       return s2;
     },
     changeHandler(label) {
@@ -141,12 +141,12 @@ export default {
 
     //GET_MENU_PERIOD
     getMenuPeriod() {
-      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=cc794522-4214-48df-8013-da05fa9f4b9b`).then(res => {
+      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=b5c3f3b1-2d90-4926-ad70-a7fb80f5c63d`).then(res => {
         let data = res.data
 			})
     },
     getWeekDetail() {
-      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=cc794522-4214-48df-8013-da05fa9f4b9b&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
+      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=b5c3f3b1-2d90-4926-ad70-a7fb80f5c63d&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
         let data = res.data
         this.title = res.data.title
         let list = res.data.list
