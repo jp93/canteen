@@ -395,7 +395,7 @@ export default {
     }
 
     .cube-scroll-nav-panel {
-      width: 90%;
+      width: 96%;
       margin: auto;
       .title{
         width 100%;
@@ -456,13 +456,13 @@ export default {
         .food-list{
           display flex
           flex-direction row
-          padding:14px 10px 14px 19px;
+          padding:10px;
           box-sizing border-box;
           width 100%;
           align-items center;
 
           .left{
-            width 18%;
+            width 13%;
             font-size:15px;
             color:#999;
           }
