@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="content">
+    <div class="content" v-if="list.length">
       <cube-scroll-nav  ref="scrollNav" :current="active"  :data="list"  @change="changeHandler">
         <template slot="bar" slot-scope="props">
           <cube-scroll-nav-bar :labels="props.labels" :txts="barTxts || a" :current="props.current">
@@ -33,7 +33,8 @@
           v-for="item in list"
           :key="item.weekday"
           :label="item.weekday"
-          title=""
+          title=' '
+         
           >
           <div :style="{'opacity':!isNoData? 1:0}">
           <div class="title" >
@@ -132,7 +133,7 @@ export default {
       d2.setDate(1);
       let rq = d1-d2;
       let s1 = Math.ceil(rq/(24*60*60*1000));
-      let s2 = Math.ceil(s1/7);
+      let s2 = Math.ceil(s1/7) + 1;
       return s2;
     },
     changeHandler(label) {
@@ -141,12 +142,12 @@ export default {
 
     //GET_MENU_PERIOD
     getMenuPeriod() {
-      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=b5c3f3b1-2d90-4926-ad70-a7fb80f5c63d`).then(res => {
+      this.$request.get(this.$apis.GET_MENU_PERIOD + `?access_token=f218831c-d85c-4b65-9ad9-bf7e07836b5a`).then(res => {
         let data = res.data
 			})
     },
     getWeekDetail() {
-      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=b5c3f3b1-2d90-4926-ad70-a7fb80f5c63d&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
+      this.$request.get(this.$apis.GET_WEEK_DETIAL + `?access_token=f218831c-d85c-4b65-9ad9-bf7e07836b5a&year=${this.currentYear}&week=${this.currentWeek}&period=0&type=0`).then(res => {
         let data = res.data
         this.title = res.data.title
         let list = res.data.list
@@ -172,6 +173,7 @@ export default {
         this.list = list
         this.active = 0
         this.$nextTick(() => {
+          console.log('刷新了scroll')
           this.$refs.scrollNav && this.$refs.scrollNav.refresh()
         })
       })
